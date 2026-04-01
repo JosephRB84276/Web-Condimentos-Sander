@@ -19,7 +19,7 @@ public class main {
         productoDAO dao = new productoDAO();
         
         
-        /*insert
+        //insert
         System.out.println("=== Probando INSERTAR ===");
         producto nuevo = new producto();
         nuevo.setNombre("Pasta de aji");
@@ -48,7 +48,7 @@ public class main {
             editar.setPrecio(2000.0);
             dao.actualizar(editar);
         }
-        */
+        
         //delete
         dao.eliminar(2);
     
