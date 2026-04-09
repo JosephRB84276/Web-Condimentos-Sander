@@ -1,1 +1,6 @@
 /bakend/target/
+/WebApp/nbproject/private/
+/WebApp/build/
+/ProyectoSenaWeb/nbproject/private/
+/ProyectoSenaWeb/build/
+/ProyectoSenaWeb/dist/

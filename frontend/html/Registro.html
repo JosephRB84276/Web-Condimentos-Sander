@@ -8,24 +8,26 @@
 <body>
     <section class="Form-register">
         <h4>Formulario Resgitro</h4>
-        <input class="controls" type="text" name="Nombres" placeholder="Nombres">
-        <input class="controls" type="text" name="Apellidos" placeholder="Apellidos">
-        <select class="controls">
-            <option value="" disabled selected>Seleccione su documento </option>
-            <option value="CC">Cédula de ciudadanía</option>
-            <option value="CE">Cédula de extranjería</option>
-            <option value="TI">Tarjeta de identidad</option>
-        </select>
-        <input class="controls" type="text" name="Numero de docuento" placeholder="Numero de docuento">
-        <input class="controls" type="text" name="Ciudad" placeholder="Ciudad">
-        <input class="controls" type="text" name="Direccion" placeholder="Direccion">
-        <input class="controls" type="text" name="Telefono" placeholder="Telefono">
-        <input class="controls" type="email" name="Correo" placeholder="Correo">
-        <input class="controls" type="password" name="Contraseña" placeholder="Contraseña">
-        <input class="controls" type="password" name="Confirmar contraseña" placeholder="Confirmar contraseña">
-        <p>Estoy de acuerdo con <a href="#">Terminos y condiciones</a></p>
-        <input class="buttons" type="submit" name="" value="Registrarse">
-        <p><a href="login.html">¿Ya tienes una cuenta? Inicia sesión</a></p>
+        <form action="RegistroServlet" method="post">
+            <input class="controls" type="text" name="nombres" placeholder="Nombres">
+            <input class="controls" type="text" name="apellidos" placeholder="Apellidos">
+            <select class="controls" name="tipo_documento">
+                <option value="" disabled selected>Seleccione su documento</option>
+                <option value="CC">Cédula de ciudadanía</option>
+                <option value="CE">Cédula de extranjería</option>
+                <option value="TI">Tarjeta de identidad</option>
+            </select>
+            <input class="controls" type="text" name="numero_documento" placeholder="Numero de documento">
+            <input class="controls" type="text" name="ciudad" placeholder="Ciudad">
+            <input class="controls" type="text" name="direccion" placeholder="Direccion">
+            <input class="controls" type="text" name="telefono" placeholder="Telefono">
+            <input class="controls" type="email" name="correo" placeholder="Correo">
+            <input class="controls" type="password" name="contrasena" placeholder="Contraseña">
+            <input class="controls" type="password" name="confirmar_contrasena" placeholder="Confirmar contraseña">
+            <p>Estoy de acuerdo con <a href="#">Terminos y condiciones</a></p>
+            <input class="buttons" type="submit" name="" value="Registrarse">
+            <p><a href="login.html">¿Ya tienes una cuenta? Inicia sesión</a></p>
+        </form>
     </section> 
 </body>
 </html>

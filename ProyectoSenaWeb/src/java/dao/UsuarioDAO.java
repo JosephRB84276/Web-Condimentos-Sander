@@ -5,123 +5,78 @@
 package dao;
 
 import conexion.conexion;
-import modelo.producto;
+import modelo.Usuario;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
-/**
- *
- * @author RYZEN
- */
-public class productoDAO {
+public class UsuarioDAO {
     
-    public void insertar(producto p){
-        String sql = "INSERT INTO producto (Nombre, Descripcion, Precio, Cantidad_empaque, Stock) VALUES (?,?,?,?,?)";
+    // REGISTRAR nuevo usuario
+    public boolean registrar(Usuario u) {
+        String sql = "INSERT INTO usuarios (nombres, apellidos, tipo_documento, numero_documento, ciudad, direccion, telefono, correo, contrasena) VALUES (?,?,?,?,?,?,?,?,?)";
         
         try (Connection conn = conexion.getConexion();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             
-            ps.setString(1, p.getNombre());
-            ps.setString(2, p.getDescripcion());
-            ps.setDouble(3, p.getPrecio());
-            ps.setInt(4, p.getCantidad_empaque());
-            ps.setInt(5, p.getStock());
+            ps.setString(1, u.getNombres());
+            ps.setString(2, u.getApellidos());
+            ps.setString(3, u.getTipo_documento());
+            ps.setString(4, u.getNumero_documento());
+            ps.setString(5, u.getCiudad());
+            ps.setString(6, u.getDireccion());
+            ps.setString(7, u.getTelefono());
+            ps.setString(8, u.getCorreo());
+            ps.setString(9, u.getContrasena()); 
             
-            ps.executeUpdate();
-            System.out.println("Producto insertado correctamente");
+            int filas = ps.executeUpdate();
+            return filas > 0;
             
         } catch (Exception e) {
-            System.out.println("Error al insertar: " + e.getMessage());
             e.printStackTrace();
+            return false;
         }
     }
     
-    public List<producto> listar() {
-        List<producto> lista = new ArrayList<>();
-        String sql = "SELECT * FROM producto";
+    // VALIDAR login
+    public Usuario validarLogin(String correo, String contrasena) {
+        String sql = "SELECT * FROM usuarios WHERE correo=? AND contrasena=?";
         
         try (Connection conn = conexion.getConexion();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             
-            while (rs.next()) {
-                producto p = new producto();
-                p.setid_producto(rs.getInt("id_producto"));
-                p.setNombre(rs.getString("Nombre"));
-                p.setDescripcion(rs.getString("Descripcion"));
-                p.setPrecio(rs.getDouble("Precio"));
-                p.setCantidad_empaque(rs.getInt("Cantidad_empaque"));
-                p.setStock(rs.getInt("Stock"));
-                
-                lista.add(p);
+            ps.setString(1, correo);
+            ps.setString(2, contrasena);
+            
+            ResultSet rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                Usuario u = new Usuario();
+                u.setId_usuario(rs.getInt("id_usuario"));
+                u.setNombres(rs.getString("nombres"));
+                u.setApellidos(rs.getString("apellidos"));
+                u.setCorreo(rs.getString("correo"));
+                // ... más campos si los necesitas ...
+                return u;
             }
         } catch (Exception e) {
-            System.out.println("Error al listar: " + e.getMessage());
             e.printStackTrace();
         }
-        return lista;
+        return null;  // Credenciales inválidas
     }
     
-    public void actualizar(producto p) {
-        String sql = "UPDATE producto SET Nombre=?, Descripcion=?, Precio=?, Cantidad_empaque=?, Stock=? WHERE id_producto=?";
-        
+    // VERIFICAR si correo ya existe
+    public boolean correoExiste(String correo) {
+        String sql = "SELECT COUNT(*) FROM usuarios WHERE correo=?";
         try (Connection conn = conexion.getConexion();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             
-            ps.setString(1, p.getNombre());
-            ps.setString(2, p.getDescripcion());
-            ps.setDouble(3, p.getPrecio());
-            ps.setInt(4, p.getCantidad_empaque());
-            ps.setInt(5, p.getStock());
-            ps.setInt(6, p.getid_producto()); 
-            
-            ps.executeUpdate();
-            System.out.println("Producto actualizado correctamente");
-            
+            ps.setString(1, correo);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
         } catch (Exception e) {
-            System.out.println("Error al actualizar: " + e.getMessage());
             e.printStackTrace();
         }
+        return false;
     }
-    public void eliminar(int id_producto) {
-        String sql = "DELETE FROM producto WHERE id_producto=?";
-        
-        try (Connection conn = conexion.getConexion();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            
-            ps.setInt(1, id_producto);
-            ps.executeUpdate();
-            System.out.println("Producto eliminado correctamente");
-            
-        } catch (Exception e) {
-            System.out.println("Error al eliminar: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-    
-    public producto buscarPorId(int id_producto) {
-    producto p = null;
-    String sql = "SELECT * FROM producto WHERE id_producto=?";
-    
-    try (Connection conn = conexion.getConexion();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
-        
-        ps.setInt(1, id_producto);
-        ResultSet rs = ps.executeQuery();
-        
-        if (rs.next()) {
-            p = new producto();
-            p.setid_producto(rs.getInt("id_producto"));
-            p.setNombre(rs.getString("Nombre"));
-            p.setDescripcion(rs.getString("Descripcion"));
-            p.setPrecio(rs.getDouble("Precio"));
-            p.setCantidad_empaque(rs.getInt("Cantidad_empaque"));
-            p.setStock(rs.getInt("Stock"));
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-    return p; 
-}
 }
